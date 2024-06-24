@@ -6,9 +6,8 @@
   "permissions": [
     "activeTab",
     "contextMenus",
-    "scripting",
-    "<all_urls>"
-  ],
+    "scripting"
+    ],
   "host_permissions": [
     "https://app01.accertify.net/*",
     "https://atlas.etsycorp.com/*"

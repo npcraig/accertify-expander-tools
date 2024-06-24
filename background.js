@@ -1,3 +1,5 @@
+// background.js
+
 chrome.runtime.onInstalled.addListener(() => {
     // Create the parent menu
     chrome.contextMenus.create({
@@ -75,5 +77,3 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-// Note: The part related to 'actionComparedAccounts' and 'continueActionComparedAccounts.js' remains unchanged.
-// If 'actionComparedAccounts' is no longer needed based on your latest instructions, consider removing it and its references.
