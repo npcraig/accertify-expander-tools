@@ -1,0 +1,41 @@
+/* styles.css */
+
+#risk-score-display {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 10px;
+    z-index: 9999;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
+#risk-score-display svg {
+    width: 100px;
+    height: 100px;
+}
+
+#risk-score-display p {
+    text-align: center;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.theme-default {
+    /* Default theme styles */
+}
+
+.theme-dark {
+    background-color: #333;
+    color: #fff;
+}
+
+.theme-neon {
+    background-color: #000;
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+}
