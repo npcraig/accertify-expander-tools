@@ -77,41 +77,12 @@ function applyTheme() {
   document.body.classList.add(`theme-${settings.theme}`);
 }
 
-function injectScript(file, node) {
-  const th = document.getElementsByTagName(node)[0];
-  const s = document.createElement('script');
-  s.setAttribute('type', 'text/javascript');
-  s.setAttribute('src', file);
-  th.appendChild(s);
-}
-
-// Inject the risk_score.js script
-injectScript(chrome.runtime.getURL('risk_score.js'), 'body');
-
-// Listen for messages from the background script and popup
+// Listen for messages from the background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'updateSettings') {
     settings = request.settings;
     applyTheme();
     sendResponse({status: 'Settings updated'});
-  } else if (request.action === "getRiskScore") {
-    const firstName = document.querySelector('body > md-content > md-content > div.layout-column.flex > md-content > acc-main-container > main > div > div > div.transaction-detail > div:nth-child(2) > div.summaryPortlet > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > div > div.row.portlet-body-wrapper > div > div:nth-child(3) > table > tbody > tr:nth-child(7) > td:nth-child(2)').textContent.trim();
-    const lastName = document.querySelector('body > md-content > md-content > div.layout-column.flex > md-content > acc-main-container > main > div > div > div.transaction-detail > div:nth-child(2) > div.summaryPortlet > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > div > div.row.portlet-body-wrapper > div > div:nth-child(3) > table > tbody > tr:nth-child(8) > td:nth-child(2)').textContent.trim();
-    const email = document.querySelector('body > md-content > md-content > div.layout-column.flex > md-content > acc-main-container > main > div > div > div.transaction-detail > div:nth-child(2) > div.summaryPortlet > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > div > div.row.portlet-body-wrapper > div > div:nth-child(3) > table > tbody > tr:nth-child(1) > td:nth-child(2) > span > span > span > span').textContent.trim();
-
-    // Use a promise to handle the asynchronous nature of calculateRiskScore
-    new Promise((resolve) => {
-      const checkRiskScoreFunction = setInterval(() => {
-        if (window.calculateRiskScore) {
-          clearInterval(checkRiskScoreFunction);
-          resolve(window.calculateRiskScore(firstName, lastName, email));
-        }
-      }, 100);
-    }).then(riskScore => {
-      sendResponse({riskScore: riskScore});
-    });
-
-    return true; // Indicates that the response will be sent asynchronously
   }
 });
 
@@ -123,7 +94,7 @@ chrome.storage.sync.get('settings', (data) => {
   }
 });
 
-// Display risk score on page load
+// Modify the risk score calculation part:
 window.addEventListener('load', async () => {
   const firstName = document.querySelector('body > md-content > md-content > div.layout-column.flex > md-content > acc-main-container > main > div > div > div.transaction-detail > div:nth-child(2) > div.summaryPortlet > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > div > div.row.portlet-body-wrapper > div > div:nth-child(3) > table > tbody > tr:nth-child(7) > td:nth-child(2)').textContent.trim();
   const lastName = document.querySelector('body > md-content > md-content > div.layout-column.flex > md-content > acc-main-container > main > div > div > div.transaction-detail > div:nth-child(2) > div.summaryPortlet > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div > div > div.row.portlet-body-wrapper > div > div:nth-child(3) > table > tbody > tr:nth-child(8) > td:nth-child(2)').textContent.trim();
